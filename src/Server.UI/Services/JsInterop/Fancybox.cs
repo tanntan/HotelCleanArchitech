@@ -17,4 +17,11 @@ public sealed class Fancybox
         return jsmodule.InvokeVoidAsync(JSInteropConstants.PreviewImage, defaultUrl,
             images.Select(x => x.Url).ToArray());
     }
+
+    public async Task<ValueTask> PreviewRoomImage(string defaultUrl, IEnumerable<RoomImage> images)
+    {
+        var jsmodule = await _jsRuntime.InvokeAsync<IJSObjectReference>("import", "/js/fancybox.js");
+        return jsmodule.InvokeVoidAsync(JSInteropConstants.PreviewImage, defaultUrl,
+            images.Select(x => x.Url).ToArray());
+    }
 }

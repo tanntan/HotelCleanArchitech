@@ -35,6 +35,27 @@ public class MenuService : IMenuService
                         }
                     }
                 },
+                new(){
+                    Title = "Hotels",
+                    Icon = Icons.Material.Filled.Hotel,
+                    PageStatus = PageStatus.Completed,
+                    IsParent = true,
+                    MenuItems = new List<MenuSectionSubItemModel>
+                    {
+                        new()
+                        {
+                            Title = "Rooms",
+                            Href = "/pages/rooms",
+                            PageStatus = PageStatus.Completed
+                        },
+                        new()
+                        {
+                            Title = "Booking",
+                            Href = "/pages/bookings",
+                            PageStatus = PageStatus.ComingSoon
+                        }
+                    }
+                },
                 new()
                 {
                     Title = "Analytics",

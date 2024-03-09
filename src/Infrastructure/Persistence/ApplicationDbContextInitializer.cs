@@ -89,6 +89,7 @@ public class ApplicationDbContextInitializer
         // Default roles
         var administratorRole = new ApplicationRole(RoleName.Admin) { Description = "Admin Group" };
         var userRole = new ApplicationRole(RoleName.Basic) { Description = "Basic Group" };
+
         var permissions = GetAllPermissions();
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
@@ -197,6 +198,35 @@ public class ApplicationDbContextInitializer
                 Description =
                     "Logitech MX Keys Mini Introducing MX Keys Mini – a smaller, smarter, and mightier keyboard made for creators. Type with confidence on a keyboard crafted for efficiency, stability, and...",
                 Unit = "PA", Price = 99.90m
+            });
+            await _context.SaveChangesAsync();
+        }
+
+        if(!_context.Rooms.Any())
+        {
+            _context.Rooms.Add(new Room
+            {
+                Name = "Room 1",
+                RoomImages = new List<RoomImage>
+                {
+                    new RoomImage
+                    {
+                        Name = "Room 1 Image 1",
+                        Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+                    }
+                }
+            });
+            _context.Rooms.Add(new Room
+            {
+                Name = "Room 2",
+                RoomImages = new List<RoomImage>
+                {
+                    new RoomImage
+                    {
+                        Name = "Room 2 Image 1",
+                        Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+                    }
+                }
             });
             await _context.SaveChangesAsync();
         }
