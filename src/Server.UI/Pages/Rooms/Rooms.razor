@@ -210,7 +210,38 @@
                 @ConstantString.Selected: @_selectedItems.Count
             </FooterTemplate>
         </PropertyColumn>
-        <PropertyColumn Property="x => x.RoomStatus" Title="@L[_currentDto.GetMemberDescription(x => x.RoomStatus)]" />
+        <PropertyColumn Property="x => x.RoomType.Name" Title="@L[_currentDto.GetMemberDescription(x => x.RoomType)]">
+            <CellTemplate>
+                <div class="d-flex flex-column">
+                    <MudText Typo="Typo.body2">@context.Item.RoomType.Name</MudText>
+                    <MudText Typo="Typo.body2" Class="mud-text-secondary">@context.Item.RoomType.Description</MudText>
+                </div>
+            </CellTemplate>
+        </PropertyColumn>
+        <PropertyColumn Property="x => x.RoomType.PricePerNight" Title="@L["Price"]" />
+        <PropertyColumn Property="x => x.RoomStatus" Title="@L[_currentDto.GetMemberDescription(x => x.RoomStatus)]">
+            <CellTemplate>
+                @switch(context.Item.RoomStatus) {
+                    case "Occupied":
+                        <MudChip Text="gray" Variant="Variant.Text" Color="Color.Primary">@context.Item.RoomStatus</MudChip>
+                    break;
+                    case "Dirty":
+                        <MudChip Text="gray" Variant="Variant.Text" Color="Color.Error">@context.Item.RoomStatus</MudChip>
+                    break;
+                    case "Cleaning":
+                        <MudChip Text="orange" Variant="Variant.Text" Color="Color.Warning">@context.Item.RoomStatus</MudChip>
+                    break;
+                    case "Ready":
+                        <MudChip Text="gray" Variant="Variant.Text" Color="Color.Success">@context.Item.RoomStatus</MudChip>
+                    break;
+                    default: 
+                        <MudChip Text="gray" Variant="Variant.Text" Color="Color.Secondary">No Status</MudChip>
+                    break;
+                }
+                
+            </CellTemplate>
+        </PropertyColumn>
+        
         
     </Columns>
     <NoRecordsContent>
@@ -259,7 +290,7 @@
     private bool _canExport;
 
     private RoomsWithPaginationQuery Query {get;} = new ();
-protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         Title = L[_currentDto.GetClassDescription()];
         var state = await AuthState;

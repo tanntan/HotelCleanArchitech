@@ -10,6 +10,7 @@ public class RoomDto
 
     [Description("Room Name")] public string? Name { get; set; }
     [Description("Room Status")]public string? RoomStatus {get; set;}
+    [Description("RoomType")] public RoomType? RoomType {get; set;}
     [Description("Room Images")] public List<RoomImage>? RoomImages { get; set; }
 
     private class Mapping : Profile

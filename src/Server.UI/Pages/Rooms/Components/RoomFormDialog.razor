@@ -9,6 +9,8 @@
 @using CleanArchitecture.Blazor.Application.Features.Rooms.Commands.AddEdit
 @using CleanArchitecture.Blazor.Domain.Common.Enums
 @using CleanArchitecture.Blazor.Server.UI.Services.JsInterop
+@using CleanArchitecture.Blazor.Application.Features.RoomTypes.DTOs
+@using CleanArchitecture.Blazor.Application.Features.RoomTypes.Queries.GetAll
 
 @inherits MudComponentBase
 
@@ -29,7 +31,7 @@
                                   RequiredError="@L["room name is required!"]">
                     </MudTextField>
                 </MudItem>
-                <MudItem xs="12" sm="4">
+                <MudItem xs="12" sm="3">
                     <PicklistAutocomplete Picklist="Picklist.Status"
                                           Label="@L["Status"]"
                                           For="@(() => Model.RoomStatus)"
@@ -41,6 +43,45 @@
                         </ProgressIndicatorTemplate>
                     </PicklistAutocomplete>
                 </MudItem>
+                <MudItem xs="12" sm="3">
+                    <MudSelect
+                    ValueChanged="HandleSelectChange"
+                    Label="@L["RoomType"]" 
+                    For="@(() => Model.RoomTypeId)"
+                    HelperText="String" 
+                    Placeholder="Please Select" 
+                    Value="Model.RoomTypeId"
+                    T="int"
+                    Required="true"
+                    RequiredError="@L["Room type is not defined please select one!"]"
+                    AdornmentIcon="@Icons.Material.Filled.List" AdornmentColor="Color.Secondary">
+                        @foreach(var type in Types)
+                        {
+                            <MudSelectItem @bind-Value="type.Id">@type.Name</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+               
+                <MudItem xs="12" sm="3">
+                    <MudTextField Label="@L["Room Price"]"
+                                Value="@(roomType?.PricePerNight ?? 0)"
+                                Disabled>
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="3">
+                    <MudTextField Label="@L["Capacity"]"
+                                Value="@(roomType?.Capacity ?? 0)"
+                                Disabled>
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Description"]"
+                                Value="@(roomType?.Description ?? "")"
+                                Disabled>
+                    </MudTextField>
+                </MudItem>
+                
+                
                 <MudItem xs="12">
                     <div class="d-flex flex-row gap-4 mb-2">
                         <MudFileUpload T="IReadOnlyList<IBrowserFile>" Multiple
@@ -94,6 +135,8 @@
 
     [Parameter] public Action? Refresh { get; set; }
 
+    private List<RoomTypeDto> Types {get; set;} = new();
+    private RoomTypeDto? roomType {get; set;}
     private MudForm? _form;
     private bool _saving;
     private bool _saveingnew;
@@ -101,6 +144,21 @@
 
     private const long MaxAllowedSize = 3145728;
 
+    private GetAllRoomTypesQuery Query {get;} = new();
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Mediator.Send(Query).ConfigureAwait(false);
+        Types.AddRange(result);
+        if(Types != null)
+        {
+            HandleSelectChange(Model.RoomTypeId);
+        }
+        
+    }
+    private void HandleSelectChange(int id){
+        Model.RoomTypeId = id;
+        roomType = Types.FirstOrDefault(t => t.Id.Equals(id));
+    }
     private async Task DeleteImage(RoomImage picture)
     {
         if (Model.RoomImages != null)

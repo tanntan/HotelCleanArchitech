@@ -12,6 +12,11 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Room> builder)
         {
             builder.Ignore(e => e.DomainEvents);
+            builder.HasOne(e => e.RoomType)
+                .WithMany()
+                .HasForeignKey(x=>x.RoomTypeId)
+                .OnDelete(DeleteBehavior.ClientNoAction);
+
             builder.Property(e => e.RoomImages)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, DefaultJsonSerializerOptions.Options),
@@ -20,6 +25,7 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Configurations
                         (c1, c2) => c1.SequenceEqual(c2),
                         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                         c => c.ToList()));
+            builder.Navigation<RoomType>(e=>e.RoomType).AutoInclude();
                         
              
         }
