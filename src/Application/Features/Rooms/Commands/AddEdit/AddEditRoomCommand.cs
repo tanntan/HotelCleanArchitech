@@ -12,7 +12,7 @@ public class AddEditRoomCommand : ICacheInvalidatorRequest<Result<int>>
 {
     public int Id { get; set; }
     public string? Name { get; set; }
-    public RoomStatus? RoomStatus { get; set; }
+    public string? RoomStatus { get; set; }
     public List<RoomImage>? RoomImages { get; set; }
     public IReadOnlyList<IBrowserFile>? UploadPictures { get; set; }
     public string CacheKey => RoomCacheKey.GetAllCacheKey;

@@ -1,0 +1,154 @@
+@using ResizeMode = SixLabors.ImageSharp.Processing.ResizeMode
+@using Severity = Severity
+@using Size = SixLabors.ImageSharp.Size
+@using Color = Color
+@using Image = SixLabors.ImageSharp.Image
+@using SixLabors.ImageSharp.Processing
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats.Png
+@using CleanArchitecture.Blazor.Application.Features.RoomTypes.Commands.AddEdit
+@using CleanArchitecture.Blazor.Domain.Common.Enums
+@using CleanArchitecture.Blazor.Server.UI.Services.JsInterop
+
+@inherits MudComponentBase
+
+@inject IJSRuntime JS
+@inject IStringLocalizer<RoomTypes> L
+@inject IValidationService Validator
+@inject IUploadService UploadService
+@inject IMediator Mediator
+
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="@Model" @ref="@_form" Validation="@(Validator.ValidateValue(Model))">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["RoomType Name"]" @bind-Value="Model.Name"
+                                  For="@(() => Model.Name)"
+                                  Required="true"
+                                  RequiredError="@L["room name is required!"]">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Description"]" @bind-Value="Model.Description"
+                                  For="@(() => Model.Description)"
+                                  Lines="3"
+                                  Required="true"
+                                  RequiredError="@L["Description is required and more then 10 charactor"]">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <PicklistAutocomplete Picklist="Picklist.Status"
+                                          Label="@L["Status"]"
+                                          For="@(() => Model.Status)"
+                                          ResetValueOnEmptyText="true"
+                                          ShowProgressIndicator="true"
+                                          @bind-Value="Model.Status">
+                        <ProgressIndicatorTemplate>
+                            <MudProgressLinear Size="MudBlazor.Size.Small" Indeterminate="true"/>
+                        </ProgressIndicatorTemplate>
+                    </PicklistAutocomplete>
+                </MudItem>
+                
+                <MudItem sm="4" xs="12">
+                    <MudTextField Label="@L["Price Pernight"]" @bind-Value="Model.PricePerNight"
+                               
+                                  For="@(() => Model.PricePerNight)"
+                                  Required="true"
+                                  RequiredError="@L[" Price Per Night is required!"]">
+                </MudTextField>
+                
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudTextField Label="@L["Capacity"]" @bind-Value="Model.Capacity"
+                                
+                                  For="@(() => Model.Capacity)"
+                                  Required="true"
+                                  RequiredError="@L["Capacity is required!"]">
+                    </MudTextField>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@ConstantString.Cancel</MudButton>
+        <MudLoadingButton Loading="@_saveingnew" OnClick="SaveAndNew">@ConstantString.SaveAndNew</MudLoadingButton>
+        <MudLoadingButton Loading="@_saving" OnClick="Submit">@ConstantString.Save</MudLoadingButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; } = default!;
+
+    [EditorRequired] [Parameter] public AddEditRoomTypeCommand Model { get; set; } = default!;
+
+    [Parameter] public Action? Refresh { get; set; }
+
+    private MudForm? _form;
+    private bool _saving;
+    private bool _saveingnew;
+    private bool _uploading;
+
+    private const long MaxAllowedSize = 3145728;
+
+
+    private async Task Submit()
+    {
+        try
+        {
+            _saving = true;
+            await _form!.Validate().ConfigureAwait(false);
+
+            if (!_form!.IsValid)
+                return;
+
+            var result = await Mediator.Send(Model);
+
+            if (result.Succeeded)
+            {
+                MudDialog.Close(DialogResult.Ok(true));
+                Snackbar.Add(ConstantString.SaveSuccess, Severity.Info);
+            }
+            else
+            {
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
+            }
+        }
+        finally
+        {
+            _saving = false;
+        }
+    }
+
+    private async Task SaveAndNew()
+    {
+        try
+        {
+            _saveingnew = true;
+            await _form!.Validate().ConfigureAwait(false);
+            if (!_form!.IsValid)
+                return;
+            var result = await Mediator.Send(Model);
+            if (result.Succeeded)
+            {
+                Snackbar.Add(ConstantString.SaveSuccess, Severity.Info);
+                Refresh?.Invoke();
+                Model = new AddEditRoomTypeCommand();
+            }
+            else
+            {
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
+            }
+        }
+        finally
+        {
+            _saveingnew = false;
+        }
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+}

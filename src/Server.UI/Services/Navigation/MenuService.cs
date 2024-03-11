@@ -50,6 +50,12 @@ public class MenuService : IMenuService
                         },
                         new()
                         {
+                            Title = "Room Type",
+                            Href = "/pages/roomtypes",
+                            PageStatus = PageStatus.Completed
+                        },
+                        new()
+                        {
                             Title = "Booking",
                             Href = "/pages/bookings",
                             PageStatus = PageStatus.ComingSoon

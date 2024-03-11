@@ -201,12 +201,29 @@ public class ApplicationDbContextInitializer
             });
             await _context.SaveChangesAsync();
         }
+        if(!_context.RoomTypes.Any())
+        {
+            _context.RoomTypes.Add(new RoomType {
+                Name="Single bed room",
+                Description = "Single bed room with single king bed",
+                PricePerNight = 100.50m,
+                Capacity = 1,
+            });
+            _context.RoomTypes.Add(new RoomType {
+                Name="Double bed room",
+                Description = "Double bed room with double king bed",
+                PricePerNight = 200.50m,
+                Capacity = 2,
+            });
 
+            await _context.SaveChangesAsync();
+        }
         if(!_context.Rooms.Any())
         {
             _context.Rooms.Add(new Room
             {
                 Name = "Room 1",
+                RoomTypeId = 3,
                 RoomImages = new List<RoomImage>
                 {
                     new RoomImage
@@ -219,6 +236,7 @@ public class ApplicationDbContextInitializer
             _context.Rooms.Add(new Room
             {
                 Name = "Room 2",
+                RoomTypeId = 3,
                 RoomImages = new List<RoomImage>
                 {
                     new RoomImage
@@ -230,5 +248,6 @@ public class ApplicationDbContextInitializer
             });
             await _context.SaveChangesAsync();
         }
+        
     }
 }

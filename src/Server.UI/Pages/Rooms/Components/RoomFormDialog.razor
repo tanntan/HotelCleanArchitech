@@ -29,7 +29,19 @@
                                   RequiredError="@L["room name is required!"]">
                     </MudTextField>
                 </MudItem>
-                <MudItem>
+                <MudItem xs="12" sm="4">
+                    <PicklistAutocomplete Picklist="Picklist.Status"
+                                          Label="@L["Status"]"
+                                          For="@(() => Model.RoomStatus)"
+                                          ResetValueOnEmptyText="true"
+                                          ShowProgressIndicator="true"
+                                          @bind-Value="Model.RoomStatus">
+                        <ProgressIndicatorTemplate>
+                            <MudProgressLinear Size="MudBlazor.Size.Small" Indeterminate="true"/>
+                        </ProgressIndicatorTemplate>
+                    </PicklistAutocomplete>
+                </MudItem>
+                <MudItem xs="12">
                     <div class="d-flex flex-row gap-4 mb-2">
                         <MudFileUpload T="IReadOnlyList<IBrowserFile>" Multiple
                                        SuppressOnChangeWhenInvalid="true"

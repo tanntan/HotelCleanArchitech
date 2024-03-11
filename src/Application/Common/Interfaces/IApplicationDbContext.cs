@@ -16,6 +16,8 @@ public interface IApplicationDbContext
     DbSet<Tenant> Tenants { get; set; }
     DbSet<Customer> Customers { get; set; }
     DbSet<Room> Rooms { get; set; }
+    DbSet<RoomType> RoomTypes {get; set;}
     ChangeTracker ChangeTracker { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

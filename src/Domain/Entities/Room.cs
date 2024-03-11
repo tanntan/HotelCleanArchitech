@@ -4,16 +4,10 @@ namespace CleanArchitecture.Blazor.Domain.Entities
     public class Room : BaseAuditableEntity
     {
         public string? Name { get; set; }
-        public RoomStatus RoomStatus { get; set; } = default!;
+        public string? RoomStatus { get; set; }
         public List<RoomImage>? RoomImages { get; set; }
-    }
-
-    public enum RoomStatus
-    {
-        Active,
-        Occupied,
-        Ready,
-        Dirty
+        public int RoomTypeId {get; set;}
+        public RoomType? RoomType {get; set;}
     }
 
     public class RoomImage

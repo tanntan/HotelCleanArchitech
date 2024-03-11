@@ -10,6 +10,7 @@ public static class PermissionModules
     public const string Products = "Products";
     public const string Brands = "Brands";
     public const string Companies = "Companies";
+    public const string Rooms = "Rooms";
 
     public static List<string> GeneratePermissionsForModule(string module)
     {
@@ -30,7 +31,8 @@ public static class PermissionModules
             Roles,
             Products,
             Brands,
-            Companies
+            Companies,
+            Rooms,
         };
     }
 }

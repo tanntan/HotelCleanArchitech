@@ -9,7 +9,7 @@ public class RoomDto
     [Description("Id")] public int Id { get; set; }
 
     [Description("Room Name")] public string? Name { get; set; }
-    [Description("Room Status")]public RoomStatus? RoomStatus {get; set;}
+    [Description("Room Status")]public string? RoomStatus {get; set;}
     [Description("Room Images")] public List<RoomImage>? RoomImages { get; set; }
 
     private class Mapping : Profile
