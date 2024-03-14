@@ -248,6 +248,22 @@ public class ApplicationDbContextInitializer
             });
             await _context.SaveChangesAsync();
         }
+        if(!_context.Guests.Any())
+        {
+            _context.Guests.Add(new Guest {
+                FirstName="Tann",
+                LastName = "Tan",
+                DateOfBith = DateTime.UtcNow,
+                Address = "Phnom Penh, Cambodia",
+                Nationality = "Khmer",
+                Email = "tanntan97@gmail.com",
+                ProfilePicture = new IdentityImage {
+                    Name = "Tann tan profile 1",
+                    Url = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+                }
+            });
+            await _context.SaveChangesAsync();
+        }
         
     }
 }

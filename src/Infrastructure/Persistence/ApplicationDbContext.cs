@@ -28,6 +28,8 @@ public class ApplicationDbContext : IdentityDbContext<
     public DbSet<Product> Products { get; set; }
     public DbSet<Room> Rooms { get; set; }
     public DbSet<RoomType> RoomTypes {get; set;}
+    public DbSet<Booking> Bookings  {get; set;}
+    public DbSet<Guest> Guests {get; set;}
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

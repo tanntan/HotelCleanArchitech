@@ -15,6 +15,13 @@ public class MenuService : IMenuService
                 new() { Title = "Home", Icon = Icons.Material.Filled.Home, Href = "/" },
                 new()
                 {
+                    Title = "Bookings",
+                    Icon = Icons.Material.Filled.Bookmark,
+                    Href = "/pages/bookings",
+                    PageStatus = PageStatus.Completed,
+                    
+                },
+                new()                {
                     Title = "E-Commerce",
                     Icon = Icons.Material.Filled.ShoppingCart,
                     PageStatus = PageStatus.Completed,
@@ -56,10 +63,11 @@ public class MenuService : IMenuService
                         },
                         new()
                         {
-                            Title = "Booking",
-                            Href = "/pages/bookings",
-                            PageStatus = PageStatus.ComingSoon
-                        }
+                            Title = "Guests",
+                            Href = "/pages/guests",
+                            PageStatus = PageStatus.Completed
+                        },
+                        
                     }
                 },
                 new()

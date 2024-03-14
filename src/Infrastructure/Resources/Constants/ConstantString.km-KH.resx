@@ -295,4 +295,13 @@
   <data name="Selected" xml:space="preserve">
     <value>បានជ្រើសរើស</value>
   </data>
+  <data name="Rooms" xml:space="preserve">
+    <value>បន្ទប់</value>
+  </data>
+  <data name="RoomType" xml:space="preserve">
+    <value>ប្រភេទបន្ទប់</value>
+  </data>
+  <data name="Room Status" xml:space="preserve">
+    <value>ស្ងានភាពបន្ទប់</value>
+  </data>
 </root>

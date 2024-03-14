@@ -4,6 +4,7 @@ using CleanArchitecture.Blazor.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Blazor.Migrators.MSSQL.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240313104152_init Entity update room type Booking and Guest")]
+    partial class initEntityupdateroomtypeBookingandGuest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,6 +89,9 @@ namespace CleanArchitecture.Blazor.Migrators.MSSQL.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Guest")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("GuestId")
                         .HasColumnType("int");
 
@@ -102,8 +108,6 @@ namespace CleanArchitecture.Blazor.Migrators.MSSQL.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GuestId");
 
                     b.ToTable("Bookings");
                 });
@@ -731,16 +735,6 @@ namespace CleanArchitecture.Blazor.Migrators.MSSQL.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Booking", b =>
-                {
-                    b.HasOne("CleanArchitecture.Blazor.Domain.Entities.Guest", "Guest")
-                        .WithMany()
-                        .HasForeignKey("GuestId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Document", b =>
