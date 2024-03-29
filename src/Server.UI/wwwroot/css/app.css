@@ -75,3 +75,8 @@
     font-size: 0.625rem;
     height: 1.125rem;
 }
+
+.mud-card-header-actions {
+    margin-top: 0;
+    margin-right: 9;
+}

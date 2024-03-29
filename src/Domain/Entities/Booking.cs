@@ -7,7 +7,7 @@ public class Booking : BaseAuditableEntity {
     public Guest? Guest {get; set;}
     public BookingType BookingType {get; set;} = default;
     public List<Room>? Rooms {get; set;}
-    public DateOnly CheckOutDate {get; set;}
-    public DateOnly CheckInDate {get; set;}
+    public DateTime CheckOutDate {get; set;}
+    public DateTime CheckInDate {get; set;}
     public decimal TotalPrice {get; set;}
 }

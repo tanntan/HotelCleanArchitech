@@ -17,6 +17,7 @@ public static class ConstantString
 
     //==========================================================//
     //for button text
+    public static string NewBooking => Localize("New Booking");
     public static string Refresh => Localize("Refresh");
     public static string Edit => Localize("Edit");
     public static string Submit => Localize("Submit");

@@ -223,7 +223,7 @@ public class ApplicationDbContextInitializer
             _context.Rooms.Add(new Room
             {
                 Name = "Room 1",
-                RoomTypeId = 3,
+                RoomTypeId = 1,
                 RoomImages = new List<RoomImage>
                 {
                     new RoomImage
@@ -236,7 +236,7 @@ public class ApplicationDbContextInitializer
             _context.Rooms.Add(new Room
             {
                 Name = "Room 2",
-                RoomTypeId = 3,
+                RoomTypeId = 1,
                 RoomImages = new List<RoomImage>
                 {
                     new RoomImage
