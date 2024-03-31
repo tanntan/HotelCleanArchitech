@@ -8,11 +8,11 @@ public static class ConstantString
     public const string CONSTANTSTRINGRESOURCEID =
         "CleanArchitecture.Blazor.Infrastructure.Resources.Constants.ConstantString";
 
-    private static readonly ResourceManager rm;
+    private static readonly ResourceManager Rm;
 
     static ConstantString()
     {
-        rm = new ResourceManager(CONSTANTSTRINGRESOURCEID, typeof(ConstantString).Assembly);
+        Rm = new ResourceManager(CONSTANTSTRINGRESOURCEID, typeof(ConstantString).Assembly);
     }
 
     //==========================================================//
@@ -102,6 +102,6 @@ public static class ConstantString
 
     public static string Localize(string key)
     {
-        return rm.GetString(key, CultureInfo.CurrentCulture) ?? key;
+        return Rm.GetString(key, CultureInfo.CurrentCulture) ?? key;
     }
 }

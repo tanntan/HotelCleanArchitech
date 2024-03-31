@@ -9,7 +9,19 @@
         <MudForm Model="@model" @ref="@_form" Validation="@(Validator.ValidateValue(model))">
             <MudGrid>
                 @*TODO: define mudform that should be edit fields, for example:*@
-                
+                <MudItem xs="12" lg="6">
+                    <MudDatePicker @bind-Value="model.CheckInDate" 
+                        Label="Standard" 
+                        Variant="Variant.Text" 
+                        Margin="Margin.Dense">
+                    </MudDatePicker>
+                    <MudDatePicker 
+                        @bind-Value="model.CheckInDate" 
+                        Label="Standard" 
+                        Variant="Variant.Text" 
+                        Margin="Margin.Dense">
+                    </MudDatePicker>
+                </MudItem>
             </MudGrid>
         </MudForm>
     </DialogContent>

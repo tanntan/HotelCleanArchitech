@@ -17,7 +17,7 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Configurations
                     v => JsonSerializer.Serialize(v, DefaultJsonSerializerOptions.Options),
                     v => JsonSerializer.Deserialize<List<Room>>(v, DefaultJsonSerializerOptions.Options),
                     new ValueComparer<List<Room>>(
-                        (c1, c2) => c1.SequenceEqual(c2),
+                        (c1, c2) => c1!.SequenceEqual(c2!),
                         c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                         c => c.ToList()));
                         

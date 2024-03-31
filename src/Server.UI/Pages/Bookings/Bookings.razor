@@ -16,132 +16,138 @@
     <MudCardHeader>
         <CardHeaderContent>
             <div class="d-flex gap-4">
-                <MudIcon Icon="@Icons.Material.Filled.DocumentScanner" Size="Size.Large"/>
+                <MudIcon Icon="@Icons.Material.Filled.DocumentScanner" Size="Size.Large" />
                 <div class="d-flex flex-column">
                     <MudText Typo="Typo.caption" Class="mb-2">@L["Documents"]</MudText>
                 </div>
             </div>
         </CardHeaderContent>
-        <CardHeaderActions >
+        <CardHeaderActions>
             <div class="d-flex gap-3" style="margin-top: 8px; margin-right: 8px;">
                 <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
-                            StartIcon="@Icons.Material.Filled.Add"
-                            Size="Size.Small"
-                            Style="margin-right: 4px; margin-bottom:4px"
-                            @onclick="OnCreate"
-                            IconColor="Color.Surface">
+                    StartIcon="@Icons.Material.Filled.Add" Size="Size.Small"
+                    Style="margin-right: 4px; margin-bottom:4px" @onclick="OnCreate" IconColor="Color.Surface">
                     @ConstantString.NewBooking
                 </MudButton>
                 <div class="d-flex gap-1">
-                        <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
-                                StartIcon="@Icons.Material.Filled.ArrowBackIos"
-                                Size="Size.Small"
-                                Style="margin-right: 4px; margin-bottom:4px"
-                                IconColor="Color.Surface">
-                        
+                    <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                        StartIcon="@Icons.Material.Filled.ArrowBackIos" Size="Size.Small"
+                        Style="margin-right: 4px; margin-bottom:4px" IconColor="Color.Surface">
+
                     </MudButton>
                     <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
-                                StartIcon="@Icons.Material.Filled.CalendarViewDay"
-                                Size="Size.Small"
-                                Style="margin-right: 4px; margin-bottom:4px"
-                                IconColor="Color.Surface">
-                                15 March, 2024
-                        
+                        StartIcon="@Icons.Material.Filled.CalendarViewDay" Size="Size.Small"
+                        Style="margin-right: 4px; margin-bottom:4px" IconColor="Color.Surface">
+                        15 March, 2024
+
                     </MudButton>
                     <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
-                                StartIcon="@Icons.Material.Filled.ArrowForwardIos"
-                                Size="Size.Small"
-                                Style="margin-right: 4px; margin-bottom:4px"
-                                IconColor="Color.Surface">
-                        
+                        StartIcon="@Icons.Material.Filled.ArrowForwardIos" Size="Size.Small"
+                        Style="margin-right: 4px; margin-bottom:4px" IconColor="Color.Surface">
+
                     </MudButton>
                 </div>
             </div>
         </CardHeaderActions>
     </MudCardHeader>
     <MudCardContent>
-       <SchedulerTimeLine Bookings="@scheduleEvents" Rooms="@RoomsList" />
+        @if (!isLoading)
+        {
+            <SchedulerTimeLine Bookings="@scheduleEvents" Rooms="@RoomsList" />
+        }
+
     </MudCardContent>
-    
+
 </MudCard>
 
 @code {
 
-    private bool? isLoading;
+    private bool isLoading = true;
     private HashSet<RoomDto> RoomsList = new();
-    private GetAllRoomsQuery Query {get;} = new ();
-    protected override async Task OnInitializedAsync() {
-        try {
+    private GetAllRoomsQuery Query { get; } = new();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
             isLoading = true;
             var result = await Mediator.Send(Query).ConfigureAwait(false);
-            RoomsList = result.ToHashSet<RoomDto>();
-            StateHasChanged();
-        } finally {
+            await InvokeAsync(() =>
+            {
+                RoomsList = result.ToHashSet<RoomDto>();
+                StateHasChanged();
+            });
+        }
+        finally
+        {
             isLoading = false;
         }
     }
 
-     private async Task OnCreate()
+    private async Task OnCreate()
     {
         var command = new CreateBookingCommand();
         var parameters = new DialogParameters<BookingFormDialog>
-            {
-                { x=>x.model,command },
-            };
+{
+{ x=>x.model,command },
+};
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = DialogService.Show<BookingFormDialog>
         (L["Create a new item"], parameters, options);
         var state = await dialog.Result;
-        
+
     }
     private List<Booking> scheduleEvents = new List<Booking>()
-    {
-        new Booking {
-            Guest = new Guest(),
-            Rooms = new List<Room>()
-                {
-                    new Room{
-                        Name="101",
-                        Id=1,
-                    }
-                },
-            CheckInDate = DateTime.Now.AddDays(5),
-            CheckOutDate = DateTime.Now.AddDays(7),
-            TotalPrice = 10.0m
-        },
-        new Booking {
-            Guest = new Guest(),
-            Rooms = new List<Room>()
-                {
-                    new Room{
-                        Name="102",
-                        Id=2,
-                    }
-                },
-            CheckInDate = DateTime.Now.AddDays(-3).AddHours(12),
-            CheckOutDate = DateTime.Now.AddDays(3).AddHours(12),
-            TotalPrice = 10.0m
-        }
-        @* new ScheduleEvent { StartTime = DateTime.Today.AddHours(9), EndTime = DateTime.Today.AddHours(10), Title = "Meeting" },
-        new ScheduleEvent { StartTime = DateTime.Today.AddHours(11), EndTime = DateTime.Today.AddHours(14), Title = "Room www" }, *@
-        // Add more events as needed
-    };
+{
+new Booking {
+Guest = new Guest(),
+Rooms = new List<Room>()
+{
+new Room{
+Name="101",
+Id=1,
+}
+},
+CheckInDate = DateTime.Now.AddDays(5),
+CheckOutDate = DateTime.Now.AddDays(7),
+TotalPrice = 10.0m
+},
+new Booking {
+Guest = new Guest(),
+Rooms = new List<Room>()
+{
+new Room{
+Name="102",
+Id=2,
+}
+},
+CheckInDate = DateTime.Now.AddDays(-3).AddHours(12),
+CheckOutDate = DateTime.Now.AddDays(3).AddHours(12),
+TotalPrice = 10.0m
+}
+    @* new ScheduleEvent { StartTime = DateTime.Today.AddHours(9), EndTime = DateTime.Today.AddHours(10), Title = "Meeting"
+},
+new ScheduleEvent { StartTime = DateTime.Today.AddHours(11), EndTime = DateTime.Today.AddHours(14), Title = "Room www"
+}, *@
+// Add more events as needed
+};
     private List<Room> Rooms = new List<Room>()
-    {
-        new Room {
-            Name="101",
-            Id = 1
-        },
-        new Room {
-            Name="102",
-            Id=2
-        },
-         new Room {
-            Name="103",
-            Id=3
-        }
-        @* new ScheduleEvent { StartTime = DateTime.Today.AddHours(9), EndTime = DateTime.Today.AddHours(10), Title = "Meeting" },
-        new ScheduleEvent { StartTime = DateTime.Today.AddHours(11), EndTime = DateTime.Today.AddHours(14), Title = "Room www" }, *@
-        // Add more events as needed
-    };
+{
+new Room {
+Name="101",
+Id = 1
+},
+new Room {
+Name="102",
+Id=2
+},
+new Room {
+Name="103",
+Id=3
+}
+    @* new ScheduleEvent { StartTime = DateTime.Today.AddHours(9), EndTime = DateTime.Today.AddHours(10), Title = "Meeting"
+},
+new ScheduleEvent { StartTime = DateTime.Today.AddHours(11), EndTime = DateTime.Today.AddHours(14), Title = "Room www"
+}, *@
+// Add more events as needed
+};
 }
